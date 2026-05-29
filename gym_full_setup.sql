@@ -1,6 +1,6 @@
 -- =====================================================
 -- GYM WEBSITE - Complete Supabase Database Schema
--- Run this code in the SQL Editor in Supabase
+-- Run this script in the Supabase SQL Editor
 -- =====================================================
 
 -- 1. MEMBERS
@@ -20,7 +20,8 @@ CREATE TABLE members (
 -- 2. PLANS
 CREATE TABLE plans (
   id            BIGSERIAL PRIMARY KEY,
-  name          TEXT NOT NULL,
+  name          TEXT NOT NULL, 
+  name_ar       TEXT,
   duration      TEXT NOT NULL CHECK (duration IN ('monthly', 'yearly')),
   price         DECIMAL(10,2) NOT NULL,
   original_price DECIMAL(10,2),
@@ -71,6 +72,7 @@ CREATE TABLE trainers (
 CREATE TABLE classes (
   id            BIGSERIAL PRIMARY KEY,
   name          TEXT NOT NULL,
+  name_ar       TEXT,
   type          TEXT NOT NULL CHECK (type IN ('Cardio', 'Strength', 'Yoga', 'Pilates', 'Zumba', 'HIIT', 'Other')),
   trainer_id    BIGINT REFERENCES trainers(id),
   day_of_week   TEXT NOT NULL CHECK (day_of_week IN ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday')),
@@ -124,35 +126,35 @@ CREATE POLICY "allow_all" ON gallery          FOR ALL USING (true) WITH CHECK (t
 CREATE POLICY "allow_all" ON contact_messages FOR ALL USING (true) WITH CHECK (true);
 
 -- =====================================================
--- SAMPLE DATA
+-- SAMPLE DATA (Test Data)
 -- =====================================================
 
 -- Sample Plans
-INSERT INTO plans (name, duration, price, original_price, features, is_featured) VALUES
-('Silver', 'monthly', 15.00, NULL,    ARRAY['Gym access 6AM-10PM', 'Locker & shower', '2 group classes/month', 'Basic assessment'], false),
-('Gold',   'monthly', 25.00, 30.00,  ARRAY['Unlimited gym access', 'All group classes', 'Personal trainer 2x/month', 'Nutrition guidance', 'Progress tracking'], true),
-('Platinum','monthly',40.00, 50.00, ARRAY['All Gold features', 'Daily personal training', 'Spa & wellness', 'Meal plan', 'Priority booking', 'VIP lounge'], false),
-('Silver Annual','yearly', 150.00, 180.00, ARRAY['Gym access 6AM-10PM', 'Locker & shower', '2 group classes/month', 'Basic assessment', 'Save 17%'], false),
-('Gold Annual',  'yearly', 250.00, 300.00, ARRAY['Unlimited gym access', 'All group classes', 'Personal trainer 2x/month', 'Nutrition guidance', 'Save 17%'], false);
+INSERT INTO plans (name, name_ar, duration, price, original_price, features, is_featured) VALUES
+('Silver', 'Silver', 'monthly', 15.00, NULL, ARRAY['Gym access 6AM-10PM', 'Locker & shower', '2 group classes/month', 'Basic assessment'], false),
+('Gold', 'Gold', 'monthly', 25.00, 30.00, ARRAY['Unlimited gym access', 'All group classes', 'Personal trainer 2x/month', 'Nutrition guidance', 'Progress tracking'], true),
+('Platinum','Platinum','monthly',40.00, 50.00, ARRAY['All Gold features', 'Daily personal training', 'Spa & wellness', 'Meal plan', 'Priority booking', 'VIP lounge'], false),
+('Silver Annual','Silver Annual','yearly', 150.00, 180.00, ARRAY['Gym access 6AM-10PM', 'Locker & shower', '2 group classes/month', 'Basic assessment', 'Save 17%'], false),
+('Gold Annual', 'Gold Annual','yearly', 250.00, 300.00, ARRAY['Unlimited gym access', 'All group classes', 'Personal trainer 2x/month', 'Nutrition guidance', 'Save 17%'], false);
 
 -- Sample Trainers
 INSERT INTO trainers (full_name, specialty, bio, experience_years, rating) VALUES
-('Sara Al-Balushi',  'Yoga & Pilates',       'Certified yoga instructor with 8 years experience. Specializes in mindfulness and flexibility training.', 8, 4.9),
-('Haya Al-Rashidi',  'Cardio & HIIT',        'Former national athlete turned fitness coach. Expert in high-intensity training and weight loss programs.', 6, 4.8),
-('Noura Al-Farsi',   'Strength & Nutrition', 'Certified personal trainer and nutritionist. Helps clients build strength and healthy eating habits.', 5, 4.7),
-('Fatima Al-Habsi',  'Zumba & Dance Fitness','Energetic dance fitness instructor bringing joy to every workout session.', 4, 4.9);
+('Sara Al-Balushi', 'Yoga & Pilates', 'Certified yoga instructor with 8 years experience. Specializes in mindfulness and flexibility training.', 8, 4.9),
+('Haya Al-Rashidi', 'Cardio & HIIT', 'Former national athlete turned fitness coach. Expert in high-intensity training and weight loss programs.', 6, 4.8),
+('Noura Al-Farsi', 'Strength & Nutrition', 'Certified personal trainer and nutritionist. Helps clients build strength and healthy eating habits.', 5, 4.7),
+('Fatima Al-Habsi', 'Zumba & Dance Fitness','Energetic dance fitness instructor bringing joy to every workout session.', 4, 4.9);
 
 -- Sample Classes
-INSERT INTO classes (name, type, trainer_id, day_of_week, start_time, end_time, capacity) VALUES
-('Morning Yoga',    'Yoga',     1, 'Sunday',    '07:00', '08:00', 15),
-('HIIT Blast',      'HIIT',     2, 'Sunday',    '09:00', '10:00', 20),
-('Strength Build',  'Strength', 3, 'Monday',    '08:00', '09:00', 12),
-('Zumba Party',     'Zumba',    4, 'Monday',    '17:00', '18:00', 25),
-('Pilates Core',    'Pilates',  1, 'Tuesday',   '07:30', '08:30', 10),
-('Cardio Burn',     'Cardio',   2, 'Tuesday',   '10:00', '11:00', 20),
-('Evening Yoga',    'Yoga',     1, 'Wednesday', '18:00', '19:00', 15),
-('Power Training',  'Strength', 3, 'Wednesday', '09:00', '10:00', 12),
-('Zumba Fiesta',    'Zumba',    4, 'Thursday',  '17:30', '18:30', 25),
-('Full Body HIIT',  'HIIT',     2, 'Thursday',  '08:00', '09:00', 20),
-('Weekend Yoga',    'Yoga',     1, 'Friday',    '09:00', '10:00', 15),
-('Dance Cardio',    'Cardio',   4, 'Saturday',  '10:00', '11:00', 20);
+INSERT INTO classes (name, name_ar, type, trainer_id, day_of_week, start_time, end_time, capacity) VALUES
+('Morning Yoga', 'Morning Yoga', 'Yoga', 1, 'Sunday', '07:00', '08:00', 15),
+('HIIT Blast', 'HIIT Blast', 'HIIT', 2, 'Sunday', '09:00', '10:00', 20),
+('Strength Build', 'Strength Build', 'Strength', 3, 'Monday', '08:00', '09:00', 12),
+('Zumba Party', 'Zumba Party', 'Zumba', 4, 'Monday', '17:00', '18:00', 25),
+('Pilates Core', 'Pilates Core', 'Pilates', 1, 'Tuesday', '07:30', '08:30', 10),
+('Cardio Burn', 'Cardio Burn', 'Cardio', 2, 'Tuesday', '10:00', '11:00', 20),
+('Evening Yoga', 'Evening Yoga', 'Yoga', 1, 'Wednesday', '18:00', '19:00', 15),
+('Power Training', 'Power Training', 'Strength', 3, 'Wednesday', '09:00', '10:00', 12),
+('Zumba Fiesta', 'Zumba Fiesta', 'Zumba', 4, 'Thursday', '17:30', '18:30', 25),
+('Full Body HIIT', 'Full Body HIIT', 'HIIT', 2, 'Thursday', '08:00', '09:00', 20),
+('Weekend Yoga', 'Weekend Yoga', 'Yoga', 1, 'Friday', '09:00', '10:00', 15),
+('Dance Cardio', 'Dance Cardio', 'Cardio', 4, 'Saturday', '10:00', '11:00', 20);
